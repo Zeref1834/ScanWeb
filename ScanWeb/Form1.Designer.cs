@@ -40,6 +40,8 @@ namespace ScanWeb
             this.Close = new System.Windows.Forms.Button();
             this.XssCheckBox = new System.Windows.Forms.CheckBox();
             this.SqlCheckBox = new System.Windows.Forms.CheckBox();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -153,11 +155,29 @@ namespace ScanWeb
             this.SqlCheckBox.Text = "Sql Injection";
             this.SqlCheckBox.UseVisualStyleBackColor = true;
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(410, 322);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(571, 158);
+            this.richTextBox1.TabIndex = 8;
+            this.richTextBox1.Text = "";
+            // 
+            // treeView1
+            // 
+            this.treeView1.Location = new System.Drawing.Point(121, 322);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(269, 158);
+            this.treeView1.TabIndex = 9;
+            this.treeView1.Click += new System.EventHandler(this.ShowResponse);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1098, 450);
+            this.ClientSize = new System.Drawing.Size(1098, 559);
+            this.Controls.Add(this.treeView1);
+            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.listBox2);
@@ -189,6 +209,8 @@ namespace ScanWeb
         private System.Windows.Forms.Button Close;
         private System.Windows.Forms.CheckBox XssCheckBox;
         private System.Windows.Forms.CheckBox SqlCheckBox;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.TreeView treeView1;
     }
 }
 
