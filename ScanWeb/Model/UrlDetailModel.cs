@@ -12,10 +12,16 @@ namespace ScanWeb.Model
         public string Url { get; set; }
         private string _response;
         public string Response { get; set; }
+        private string _method;
+        public string Method { get; set; }
+        private string _parameter;
+        public string Parameter { get; set; }
 
-        public UrlDetailModel(string url, string response)
+        public UrlDetailModel(string method, string url, string parameter, string response)
         {
+            Method = method;
             Url = url;
+            Parameter = parameter;
             Response = response;
         }
     }

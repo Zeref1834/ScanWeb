@@ -17,29 +17,25 @@ namespace ScanWeb
 {
     public partial class Form1 : Form
     {
-        private List<string> _listRequest = new List<string>();
         private int numberOfXSS = 0;
         private int numberOfSQL = 0;
-        List<UrlDetailModel> _listUrlDetail = new List<UrlDetailModel>();
+        private List<UrlDetailModel> _listUrlDetail = new List<UrlDetailModel>();
         public Form1()
         {
             InitializeComponent();
 
         }
 
-        
-
         private void button2_Click(object sender, EventArgs e)
         {
-            
-            listBox2.Items.Clear();
             GetURL(textBox1.Text);
             AddTreeView();
         }
 
         public void ScanXss(string parm, string _url)
         {
-            string _xssUrl = _url.Replace(parm, parm + "ra<xss>it");
+            string parameter = "ra<xss>it";
+            string _xssUrl = _url.Replace(parm, parm + parameter);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_xssUrl);
             request.Method = "GET";
             string _xss = string.Empty;
@@ -47,26 +43,31 @@ namespace ScanWeb
             if (_xss.Contains("<xss>"))
             {
                 numberOfXSS ++;
-                UrlDetailModel item = new UrlDetailModel(_url, _xss);
+                UrlDetailModel item = new UrlDetailModel(request.Method, _url, parameter, _xss);
                 _listUrlDetail.Add(item);
             }
+            dataGridView1.Rows.Add(request.Method, _url, parameter);
+            
         }
 
         public void ScanSql(string parm, string _url)
         {
-            //string _sqlUrl = _url.Replace(parm, parm + "ra'it");
-            //HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_sqlUrl);
-            //request.Method = "GET";
-            //string _sql = string.Empty;
-            //using (StreamReader lectura = new StreamReader(request.GetResponse().GetResponseStream())) _sql = lectura.ReadToEnd();
-            //if (_sql.Contains("error in your SQL syntax"))
-            //{
-            //    numberOfSQL ++;
-            //    _listSQL.Add(parm);
-            //}
+            string parameter = "ra'it";
+            string _sqlUrl = _url.Replace(parm, parm + parameter);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_sqlUrl);
+            request.Method = "GET";
+            string _sql = string.Empty;
+            using (StreamReader lectura = new StreamReader(request.GetResponse().GetResponseStream())) _sql = lectura.ReadToEnd();
+            if (_sql.Contains("error in your SQL syntax"))
+            {
+                numberOfSQL++;
+                UrlDetailModel item = new UrlDetailModel(request.Method, _url, parameter, _sql);
+                _listUrlDetail.Add(item);
+            }
+            dataGridView1.Rows.Add(request.Method, _url, parameter);
         }
 
-        public async void GetURL(string txt)
+        public void GetURL(string txt)
         {
             List<string> _listUrl = new List<string>();
             HtmlWeb hw = new HtmlWeb();
@@ -82,7 +83,6 @@ namespace ScanWeb
                 string _url = item.ToString();
                 int index = _url.IndexOf('?');
                 parms = _url.Remove(0, index + 1).Split('&');
-                listBox2.Items.Add(_url);
                 foreach (string parm in parms)
                 {
                     try
@@ -142,22 +142,6 @@ namespace ScanWeb
 
         }
 
-        private void Close_Click(object sender, EventArgs e)
-        {
-            if(SqlCheckBox.Checked == false && XssCheckBox.Checked == false)
-            {
-                button2.Enabled = false;
-                textBox1.Enabled = false;
-            }
-            else
-            {
-                button2.Enabled = true;
-                textBox1.Enabled = true;
-            }
-            panel1.Visible = false;
-            Close.Visible = false;
-        }
-
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             panel1.Visible = true;
@@ -171,7 +155,34 @@ namespace ScanWeb
 
         private void ShowResponse(object sender, EventArgs e)
         {
-            
+            foreach(var unit in _listUrlDetail)
+            {
+                if (treeView1.SelectedNode != null &&treeView1.SelectedNode.Text.Equals(unit.Url))
+                {
+                    richTextBox1.Text = unit.Response;
+                }    
+            }
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void Close_Click(object sender, MouseEventArgs e)
+        {
+            if (SqlCheckBox.Checked == false && XssCheckBox.Checked == false)
+            {
+                button2.Enabled = false;
+                textBox1.Enabled = false;
+            }
+            else
+            {
+                button2.Enabled = true;
+                textBox1.Enabled = true;
+            }
+            panel1.Visible = false;
+            Close.Visible = false;
         }
     }
 }
