@@ -38,19 +38,23 @@ namespace ScanWeb
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.Response = new System.Windows.Forms.GroupBox();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Method = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Url = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Paramate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.Close = new System.Windows.Forms.Button();
             this.XssCheckBox = new System.Windows.Forms.CheckBox();
             this.SqlCheckBox = new System.Windows.Forms.CheckBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Method = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Url = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Paramate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.Response.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -106,21 +110,90 @@ namespace ScanWeb
             this.optionsToolStripMenuItem.Text = "Options";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
-            // richTextBox1
+            // Response
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(506, 398);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(977, 305);
-            this.richTextBox1.TabIndex = 8;
-            this.richTextBox1.Text = "";
+            this.Response.Controls.Add(this.treeView1);
+            this.Response.Controls.Add(this.richTextBox1);
+            this.Response.Location = new System.Drawing.Point(121, 360);
+            this.Response.Name = "Response";
+            this.Response.Size = new System.Drawing.Size(1362, 343);
+            this.Response.TabIndex = 12;
+            this.Response.TabStop = false;
+            this.Response.Text = "Response";
+            this.Response.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // treeView1
             // 
-            this.treeView1.Location = new System.Drawing.Point(121, 398);
+            this.treeView1.Location = new System.Drawing.Point(6, 32);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(357, 305);
-            this.treeView1.TabIndex = 9;
-            this.treeView1.Click += new System.EventHandler(this.ShowResponse);
+            this.treeView1.Size = new System.Drawing.Size(351, 305);
+            this.treeView1.TabIndex = 11;
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.ShowResponse);
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(385, 32);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(971, 305);
+            this.richTextBox1.TabIndex = 10;
+            this.richTextBox1.Text = "";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.panel1);
+            this.groupBox1.Controls.Add(this.dataGridView1);
+            this.groupBox1.Location = new System.Drawing.Point(121, 96);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(1362, 258);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "List Url Request";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.Close);
+            this.panel1.Controls.Add(this.XssCheckBox);
+            this.panel1.Controls.Add(this.SqlCheckBox);
+            this.panel1.Location = new System.Drawing.Point(509, 76);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(286, 176);
+            this.panel1.TabIndex = 14;
+            this.panel1.Visible = false;
+            // 
+            // Close
+            // 
+            this.Close.Location = new System.Drawing.Point(111, 142);
+            this.Close.Name = "Close";
+            this.Close.Size = new System.Drawing.Size(75, 23);
+            this.Close.TabIndex = 2;
+            this.Close.Text = "Close";
+            this.Close.UseVisualStyleBackColor = true;
+            this.Close.Visible = false;
+            this.Close.Click += new System.EventHandler(this.Close_Click);
+            // 
+            // XssCheckBox
+            // 
+            this.XssCheckBox.AutoSize = true;
+            this.XssCheckBox.Checked = true;
+            this.XssCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.XssCheckBox.Location = new System.Drawing.Point(155, 55);
+            this.XssCheckBox.Name = "XssCheckBox";
+            this.XssCheckBox.Size = new System.Drawing.Size(92, 19);
+            this.XssCheckBox.TabIndex = 1;
+            this.XssCheckBox.Text = "Xss Injection";
+            this.XssCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // SqlCheckBox
+            // 
+            this.SqlCheckBox.AutoSize = true;
+            this.SqlCheckBox.Checked = true;
+            this.SqlCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.SqlCheckBox.Location = new System.Drawing.Point(53, 55);
+            this.SqlCheckBox.Name = "SqlCheckBox";
+            this.SqlCheckBox.Size = new System.Drawing.Size(91, 19);
+            this.SqlCheckBox.TabIndex = 0;
+            this.SqlCheckBox.Text = "Sql Injection";
+            this.SqlCheckBox.UseVisualStyleBackColor = true;
             // 
             // dataGridView1
             // 
@@ -147,14 +220,13 @@ namespace ScanWeb
             this.Url,
             this.Paramate});
             this.dataGridView1.GridColor = System.Drawing.Color.White;
-            this.dataGridView1.Location = new System.Drawing.Point(121, 123);
+            this.dataGridView1.Location = new System.Drawing.Point(6, 34);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(1362, 218);
-            this.dataGridView1.TabIndex = 10;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.dataGridView1.Size = new System.Drawing.Size(1350, 218);
+            this.dataGridView1.TabIndex = 12;
             // 
             // Method
             // 
@@ -181,73 +253,27 @@ namespace ScanWeb
             this.Paramate.HeaderText = "Paramate";
             this.Paramate.Name = "Paramate";
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.Close);
-            this.panel1.Controls.Add(this.XssCheckBox);
-            this.panel1.Controls.Add(this.SqlCheckBox);
-            this.panel1.Location = new System.Drawing.Point(699, 264);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(286, 176);
-            this.panel1.TabIndex = 11;
-            this.panel1.Visible = false;
-            // 
-            // Close
-            // 
-            this.Close.Location = new System.Drawing.Point(111, 142);
-            this.Close.Name = "Close";
-            this.Close.Size = new System.Drawing.Size(75, 23);
-            this.Close.TabIndex = 2;
-            this.Close.Text = "Close";
-            this.Close.UseVisualStyleBackColor = true;
-            this.Close.Visible = false;
-            this.Close.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Close_Click);
-            // 
-            // XssCheckBox
-            // 
-            this.XssCheckBox.AutoSize = true;
-            this.XssCheckBox.Checked = true;
-            this.XssCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.XssCheckBox.Location = new System.Drawing.Point(155, 55);
-            this.XssCheckBox.Name = "XssCheckBox";
-            this.XssCheckBox.Size = new System.Drawing.Size(92, 19);
-            this.XssCheckBox.TabIndex = 1;
-            this.XssCheckBox.Text = "Xss Injection";
-            this.XssCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // SqlCheckBox
-            // 
-            this.SqlCheckBox.AutoSize = true;
-            this.SqlCheckBox.Checked = true;
-            this.SqlCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.SqlCheckBox.Location = new System.Drawing.Point(53, 55);
-            this.SqlCheckBox.Name = "SqlCheckBox";
-            this.SqlCheckBox.Size = new System.Drawing.Size(91, 19);
-            this.SqlCheckBox.TabIndex = 0;
-            this.SqlCheckBox.Text = "Sql Injection";
-            this.SqlCheckBox.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1495, 715);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.treeView1);
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.Response);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Scan WebSite";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.Response.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -261,16 +287,18 @@ namespace ScanWeb
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem menuToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.GroupBox Response;
         private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Method;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Url;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Paramate;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button Close;
         private System.Windows.Forms.CheckBox XssCheckBox;
         private System.Windows.Forms.CheckBox SqlCheckBox;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Method;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Url;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Paramate;
     }
 }
 

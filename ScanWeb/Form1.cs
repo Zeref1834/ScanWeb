@@ -28,6 +28,7 @@ namespace ScanWeb
 
         private void button2_Click(object sender, EventArgs e)
         {
+            dataGridView1.DataBindings.Clear();
             GetURL(textBox1.Text);
             AddTreeView();
         }
@@ -39,7 +40,8 @@ namespace ScanWeb
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_xssUrl);
             request.Method = "GET";
             string _xss = string.Empty;
-            using (StreamReader lectura = new StreamReader(request.GetResponse().GetResponseStream())) _xss = lectura.ReadToEnd();
+            StreamReader response = new StreamReader(request.GetResponse().GetResponseStream());
+            _xss = response.ReadToEnd();
             if (_xss.Contains("<xss>"))
             {
                 numberOfXSS ++;
@@ -57,7 +59,8 @@ namespace ScanWeb
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_sqlUrl);
             request.Method = "GET";
             string _sql = string.Empty;
-            using (StreamReader lectura = new StreamReader(request.GetResponse().GetResponseStream())) _sql = lectura.ReadToEnd();
+            StreamReader response = new StreamReader(request.GetResponse().GetResponseStream());
+            _sql = response.ReadToEnd();
             if (_sql.Contains("error in your SQL syntax"))
             {
                 numberOfSQL++;
@@ -69,6 +72,8 @@ namespace ScanWeb
 
         public void GetURL(string txt)
         {
+            if (txt == null)
+                return;
             List<string> _listUrl = new List<string>();
             HtmlWeb hw = new HtmlWeb();
             string[] parms;
@@ -153,23 +158,17 @@ namespace ScanWeb
 
         }
 
-        private void ShowResponse(object sender, EventArgs e)
-        {
-            foreach(var unit in _listUrlDetail)
-            {
-                if (treeView1.SelectedNode != null &&treeView1.SelectedNode.Text.Equals(unit.Url))
-                {
-                    richTextBox1.Text = unit.Response;
-                }    
-            }
-        }
-
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
 
-        private void Close_Click(object sender, MouseEventArgs e)
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Close_Click(object sender, EventArgs e)
         {
             if (SqlCheckBox.Checked == false && XssCheckBox.Checked == false)
             {
@@ -183,6 +182,17 @@ namespace ScanWeb
             }
             panel1.Visible = false;
             Close.Visible = false;
+        }
+
+        private void ShowResponse(object sender, TreeViewEventArgs e)
+        {
+            foreach (var unit in _listUrlDetail)
+            {
+                if (treeView1.SelectedNode != null && treeView1.SelectedNode.Text.Equals(unit.Url))
+                {
+                    richTextBox1.Text = unit.Response;
+                }
+            }
         }
     }
 }
