@@ -28,7 +28,9 @@ namespace ScanWeb
 
         private void button2_Click(object sender, EventArgs e)
         {
-            dataGridView1.DataBindings.Clear();
+            treeView1 = new TreeView();
+            dataGridView1.Rows.Clear();
+            richTextBox1.Text = null;
             GetURL(textBox1.Text);
             AddTreeView();
         }
