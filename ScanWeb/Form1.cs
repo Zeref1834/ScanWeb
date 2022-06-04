@@ -26,53 +26,48 @@ namespace ScanWeb
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private async void button2_Click(object sender, EventArgs e)
         {
-            treeView1 = new TreeView();
+            numberOfSQL = 0;
+            numberOfXSS = 0;
+            treeView1.Nodes.Clear();
             dataGridView1.Rows.Clear();
+            _listUrlDetail.Clear();
             richTextBox1.Text = null;
-            GetURL(textBox1.Text);
+            await GetURL(textBox1.Text);
             AddTreeView();
         }
 
-        public void ScanXss(string parm, string _url)
+        public async Task<UrlDetailModel> ScanXssAsync(string parm, string _url)
         {
             string parameter = "ra<xss>it";
             string _xssUrl = _url.Replace(parm, parm + parameter);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_xssUrl);
             request.Method = "GET";
             string _xss = string.Empty;
-            StreamReader response = new StreamReader(request.GetResponse().GetResponseStream());
+            var ws = await request.GetResponseAsync();
+            StreamReader response = new StreamReader(ws.GetResponseStream());
             _xss = response.ReadToEnd();
-            if (_xss.Contains("<xss>"))
-            {
-                numberOfXSS ++;
-                UrlDetailModel item = new UrlDetailModel(request.Method, _url, parameter, _xss);
-                _listUrlDetail.Add(item);
-            }
-            dataGridView1.Rows.Add(request.Method, _url, parameter);
-            
+            UrlDetailModel item = new UrlDetailModel(request.Method, _url, parameter, _xss);
+            return item;
+
         }
 
-        public void ScanSql(string parm, string _url)
+        public async Task<UrlDetailModel> ScanSqlAsync(string parm, string _url)
         {
             string parameter = "ra'it";
             string _sqlUrl = _url.Replace(parm, parm + parameter);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_sqlUrl);
             request.Method = "GET";
             string _sql = string.Empty;
-            StreamReader response = new StreamReader(request.GetResponse().GetResponseStream());
+            var ws = await request.GetResponseAsync();
+            StreamReader response = new StreamReader(ws.GetResponseStream());
             _sql = response.ReadToEnd();
-            if (_sql.Contains("error in your SQL syntax"))
-            {
-                numberOfSQL++;
-                UrlDetailModel item = new UrlDetailModel(request.Method, _url, parameter, _sql);
-                _listUrlDetail.Add(item);
-            }
-            dataGridView1.Rows.Add(request.Method, _url, parameter);
+            UrlDetailModel item = new UrlDetailModel(request.Method, _url, parameter, _sql);
+            return item;
         }
 
-        public void GetURL(string txt)
+        public async Task GetURL(string txt)
         {
             if (txt == null)
                 return;
@@ -96,16 +91,45 @@ namespace ScanWeb
                     {
                         if (XssCheckBox.Checked == true && SqlCheckBox.Checked == false)
                         {
-                            ScanXss(parm, _url);
+                            UrlDetailModel xss = await ScanXssAsync(parm, _url);
+                            if (xss.Response.Contains("<xss>"))
+                            {
+                                numberOfXSS++;
+                                _listUrlDetail.Add(xss);
+                            }
+                            dataGridView1.Rows.Add(xss.Method, _url, xss.Parameter);
+                            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
+
                         }
                         else if (SqlCheckBox.Checked == true && XssCheckBox.Checked == false)
                         {
-                            ScanSql(parm, _url);
+                            UrlDetailModel sql = await ScanSqlAsync(parm, _url);
+                            if (sql.Response.Contains("error in your SQL syntax"))
+                            {
+                                numberOfSQL++;
+                                _listUrlDetail.Add(sql);
+                            }
+                            dataGridView1.Rows.Add(sql.Method, _url, sql.Parameter);
+                            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
                         }
                         else if (XssCheckBox.Checked == true && SqlCheckBox.Checked == true)
                         {
-                            ScanSql(parm, _url);
-                            ScanXss(parm, _url);
+                            UrlDetailModel xss = await ScanXssAsync(parm, _url);
+                            if (xss.Response.Contains("<xss>"))
+                            {
+                                numberOfXSS++;
+                                _listUrlDetail.Add(xss);
+                            }
+                            dataGridView1.Rows.Add(xss.Method, _url, xss.Parameter);
+                            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
+                            UrlDetailModel sql = await ScanSqlAsync(parm, _url);
+                            if (sql.Response.Contains("error in your SQL syntax"))
+                            {
+                                numberOfSQL++;
+                                _listUrlDetail.Add(sql);
+                            }
+                            dataGridView1.Rows.Add(sql.Method, _url, sql.Parameter);
+                            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
                         }
                     }
                     catch (Exception ex) { }
