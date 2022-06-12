@@ -1,0 +1,25 @@
+﻿SQL Injection
+
+Risk:			Medium
+Reliability:	Warnning
+Decription:		
+	SQL injection, also known as SQLI, is a common attack vector that uses malicious SQL code for backend database manipulation to access information that was not intended to be displayed. This information may include any number of items, including sensitive company data, user lists or private customer details.
+Solution:
+	Validate User Inputs
+	Sanitize Data By Limiting Special Characters
+	Enforce Prepared Statements And Parameterization
+	Use Stored Procedures In The Database
+	Actively Manage Patches And Updates
+	Raise Virtual Or Physical Firewalls
+	Harden Your OS And Applications
+	Reduce Your Attack Surface
+	Establish Appropriate Privileges And Strict Access 
+	Limit Read-Access 
+	Encryption: Keep Your Secrets Secret
+	Deny Extended URLs
+	Don’t Divulge More Than Necessary In Error Messages
+	No Shared Databases Or User Accounts
+	Enforce Best Practices For Account And Password Policies
+	Continuous Monitoring Of SQL Statements
+	Perform Regular Auditing And Penetration Testing
+	Code Development & Buying Better Software

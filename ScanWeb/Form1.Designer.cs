@@ -39,8 +39,10 @@ namespace ScanWeb
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Response = new System.Windows.Forms.GroupBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.Close = new System.Windows.Forms.Button();
@@ -50,8 +52,13 @@ namespace ScanWeb
             this.Method = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Url = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Paramate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             this.Response.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -112,8 +119,8 @@ namespace ScanWeb
             // 
             // Response
             // 
+            this.Response.Controls.Add(this.tabControl1);
             this.Response.Controls.Add(this.treeView1);
-            this.Response.Controls.Add(this.richTextBox1);
             this.Response.Location = new System.Drawing.Point(121, 360);
             this.Response.Name = "Response";
             this.Response.Size = new System.Drawing.Size(1362, 343);
@@ -122,6 +129,38 @@ namespace ScanWeb
             this.Response.Text = "Response";
             this.Response.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(385, 32);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(971, 305);
+            this.tabControl1.TabIndex = 12;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.richTextBox1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 24);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(963, 277);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Response";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.richTextBox2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(963, 277);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Info Vulnerability";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
             // treeView1
             // 
             this.treeView1.Location = new System.Drawing.Point(6, 32);
@@ -129,14 +168,6 @@ namespace ScanWeb
             this.treeView1.Size = new System.Drawing.Size(351, 305);
             this.treeView1.TabIndex = 11;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.ShowResponse);
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Location = new System.Drawing.Point(385, 32);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(971, 305);
-            this.richTextBox1.TabIndex = 10;
-            this.richTextBox1.Text = "";
             // 
             // groupBox1
             // 
@@ -253,6 +284,22 @@ namespace ScanWeb
             this.Paramate.HeaderText = "Paramate";
             this.Paramate.Name = "Paramate";
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(963, 277);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = "";
+            // 
+            // richTextBox2
+            // 
+            this.richTextBox2.Location = new System.Drawing.Point(0, 0);
+            this.richTextBox2.Name = "richTextBox2";
+            this.richTextBox2.Size = new System.Drawing.Size(963, 277);
+            this.richTextBox2.TabIndex = 0;
+            this.richTextBox2.Text = "";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -270,6 +317,9 @@ namespace ScanWeb
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.Response.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -289,7 +339,6 @@ namespace ScanWeb
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.GroupBox Response;
         private System.Windows.Forms.TreeView treeView1;
-        private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Method;
@@ -299,6 +348,11 @@ namespace ScanWeb
         private System.Windows.Forms.Button Close;
         private System.Windows.Forms.CheckBox XssCheckBox;
         private System.Windows.Forms.CheckBox SqlCheckBox;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox richTextBox2;
     }
 }
 

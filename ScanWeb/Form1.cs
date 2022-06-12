@@ -20,6 +20,8 @@ namespace ScanWeb
         private int numberOfXSS = 0;
         private int numberOfSQL = 0;
         private List<UrlDetailModel> _listUrlDetail = new List<UrlDetailModel>();
+        private List<string> _listParameter = new List<string>();
+        
         public Form1()
         {
             InitializeComponent();
@@ -34,14 +36,15 @@ namespace ScanWeb
             dataGridView1.Rows.Clear();
             _listUrlDetail.Clear();
             richTextBox1.Text = null;
+            richTextBox2.Text = null;
             await GetURL(textBox1.Text);
             AddTreeView();
         }
 
-        public async Task<UrlDetailModel> ScanXssAsync(string parm, string _url)
+        public async Task<UrlDetailModel> ScanXssAsync(string _url)
         {
-            string parameter = "ra<xss>it";
-            string _xssUrl = _url.Replace(parm, parm + parameter);
+            string parameter = "<xss>";
+            string _xssUrl = _url + parameter;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_xssUrl);
             request.Method = "GET";
             string _xss = string.Empty;
@@ -53,10 +56,10 @@ namespace ScanWeb
 
         }
 
-        public async Task<UrlDetailModel> ScanSqlAsync(string parm, string _url)
+        public async Task<UrlDetailModel> ScanSqlAsync(string _url)
         {
-            string parameter = "ra'it";
-            string _sqlUrl = _url.Replace(parm, parm + parameter);
+            string parameter = "'";
+            string _sqlUrl = _url + parameter;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_sqlUrl);
             request.Method = "GET";
             string _sql = string.Empty;
@@ -66,6 +69,26 @@ namespace ScanWeb
             UrlDetailModel item = new UrlDetailModel(request.Method, _url, parameter, _sql);
             return item;
         }
+        public void CheckXSS(UrlDetailModel xss)
+        {
+            if (xss.Response.Contains("<xss>"))
+            {
+                numberOfXSS++;
+                _listUrlDetail.Add(xss);
+            }
+            dataGridView1.Rows.Add(xss.Method, xss.Url, xss.Parameter);
+            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
+        }
+        public void CheckSQL(UrlDetailModel sql)
+        {
+            if (sql.Response.Contains("error in your SQL syntax"))
+            {
+                numberOfSQL++;
+                _listUrlDetail.Add(sql);
+            }
+            dataGridView1.Rows.Add(sql.Method, sql.Url, sql.Parameter);
+            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
+        }
 
         public async Task GetURL(string txt)
         {
@@ -73,68 +96,36 @@ namespace ScanWeb
                 return;
             List<string> _listUrl = new List<string>();
             HtmlWeb hw = new HtmlWeb();
-            string[] parms;
             HtmlAgilityPack.HtmlDocument doc = hw.Load(txt);
             foreach (HtmlNode link in doc.DocumentNode.SelectNodes("//a[@href]"))
             {
                 HtmlAttribute att = link.Attributes["href"];
                 _listUrl.Add(att.Value);
             }
-            foreach (var item in _listUrl)
+            foreach (var _url in _listUrl)
             {
-                string _url = item.ToString();
-                int index = _url.IndexOf('?');
-                parms = _url.Remove(0, index + 1).Split('&');
-                foreach (string parm in parms)
+                
+                try
                 {
-                    try
+                    if (XssCheckBox.Checked == true && SqlCheckBox.Checked == false)
                     {
-                        if (XssCheckBox.Checked == true && SqlCheckBox.Checked == false)
-                        {
-                            UrlDetailModel xss = await ScanXssAsync(parm, _url);
-                            if (xss.Response.Contains("<xss>"))
-                            {
-                                numberOfXSS++;
-                                _listUrlDetail.Add(xss);
-                            }
-                            dataGridView1.Rows.Add(xss.Method, _url, xss.Parameter);
-                            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
-
-                        }
-                        else if (SqlCheckBox.Checked == true && XssCheckBox.Checked == false)
-                        {
-                            UrlDetailModel sql = await ScanSqlAsync(parm, _url);
-                            if (sql.Response.Contains("error in your SQL syntax"))
-                            {
-                                numberOfSQL++;
-                                _listUrlDetail.Add(sql);
-                            }
-                            dataGridView1.Rows.Add(sql.Method, _url, sql.Parameter);
-                            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
-                        }
-                        else if (XssCheckBox.Checked == true && SqlCheckBox.Checked == true)
-                        {
-                            UrlDetailModel xss = await ScanXssAsync(parm, _url);
-                            if (xss.Response.Contains("<xss>"))
-                            {
-                                numberOfXSS++;
-                                _listUrlDetail.Add(xss);
-                            }
-                            dataGridView1.Rows.Add(xss.Method, _url, xss.Parameter);
-                            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
-                            UrlDetailModel sql = await ScanSqlAsync(parm, _url);
-                            if (sql.Response.Contains("error in your SQL syntax"))
-                            {
-                                numberOfSQL++;
-                                _listUrlDetail.Add(sql);
-                            }
-                            dataGridView1.Rows.Add(sql.Method, _url, sql.Parameter);
-                            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
-                        }
+                        UrlDetailModel xss = await ScanXssAsync(_url);
+                        CheckXSS(xss);
                     }
-                    catch (Exception ex) { }
-
+                    else if (SqlCheckBox.Checked == true && XssCheckBox.Checked == false)
+                    {
+                        UrlDetailModel sql = await ScanSqlAsync(_url);
+                        CheckSQL(sql);
+                    }
+                    else if (XssCheckBox.Checked == true && SqlCheckBox.Checked == true)
+                    {
+                        UrlDetailModel xss = await ScanXssAsync(_url);
+                        CheckXSS(xss);
+                        UrlDetailModel sql = await ScanSqlAsync(_url);
+                        CheckSQL(sql);
+                    }
                 }
+                catch (Exception ex) { }
             }
         }
 
@@ -218,6 +209,16 @@ namespace ScanWeb
                 {
                     richTextBox1.Text = unit.Response;
                 }
+                if(treeView1.SelectedNode.Text.Contains("SQL") && numberOfSQL != 0)
+                {
+                    string textFile = @"C:\Users\PC\OneDrive\Desktop\DATN\ScanWeb\ScanWeb\String\InfoSQL.txt";
+                    richTextBox2.Text = File.ReadAllText(textFile);
+                }
+                if(treeView1.SelectedNode.Text.Contains("XSS") && numberOfXSS != 0)
+                {
+                    string textFile = @"C:\Users\PC\OneDrive\Desktop\DATN\ScanWeb\ScanWeb\String\InfoXSS.txt";
+                    richTextBox2.Text = File.ReadAllText(textFile);
+                }  
             }
         }
     }
