@@ -56,9 +56,8 @@ namespace ScanWeb
 
         }
 
-        public async Task<UrlDetailModel> ScanSqlAsync(string _url)
+        public async Task<UrlDetailModel> ScanSqlAsync(string _url, string parameter)
         {
-            string parameter = "'";
             string _sqlUrl = _url + parameter;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_sqlUrl);
             request.Method = "GET";
@@ -95,8 +94,10 @@ namespace ScanWeb
             if (txt == null)
                 return;
             List<string> _listUrl = new List<string>();
-            string textFile = @"C:\Users\PC\OneDrive\Desktop\DATN\ScanWeb\ScanWeb\String\XssPayloadList.txt";
-            string[] parameters = File.ReadAllLines(textFile);
+            string textFileXss = @"C:\Users\PC\OneDrive\Desktop\DATN\ScanWeb\ScanWeb\String\XssPayloadList.txt";
+            string[] xssparameters = File.ReadAllLines(textFileXss);
+            string textFileSql = @"C:\Users\PC\OneDrive\Desktop\DATN\ScanWeb\ScanWeb\String\SqlInjectionsPayload.txt";
+            string[] sqlParameters = File.ReadAllLines(textFileSql);
             HtmlWeb hw = new HtmlWeb();
             HtmlAgilityPack.HtmlDocument doc = hw.Load(txt);
             foreach (HtmlNode link in doc.DocumentNode.SelectNodes("//a[@href]"))
@@ -111,7 +112,7 @@ namespace ScanWeb
                 {
                     if (XssCheckBox.Checked == true && SqlCheckBox.Checked == false)
                     {
-                        foreach (string parameter in parameters)
+                        foreach (string parameter in xssparameters)
                         {
                             UrlDetailModel xss = await ScanXssAsync(_url, parameter);
                             CheckXSS(xss);
@@ -120,18 +121,24 @@ namespace ScanWeb
                     }
                     else if (SqlCheckBox.Checked == true && XssCheckBox.Checked == false)
                     {
-                        UrlDetailModel sql = await ScanSqlAsync(_url);
-                        CheckSQL(sql);
+                        foreach(string parameter in sqlParameters)
+                        {
+                            UrlDetailModel sql = await ScanSqlAsync(_url, parameter);
+                            CheckSQL(sql);
+                        }
                     }
                     else if (XssCheckBox.Checked == true && SqlCheckBox.Checked == true)
                     {
-                        foreach (string parameter in parameters)
+                        foreach (string parameter in xssparameters)
                         {
                             UrlDetailModel xss = await ScanXssAsync(_url, parameter);
                             CheckXSS(xss);
                         }
-                        UrlDetailModel sql = await ScanSqlAsync(_url);
-                        CheckSQL(sql);
+                        foreach (string parameter in sqlParameters)
+                        {
+                            UrlDetailModel sql = await ScanSqlAsync(_url, parameter);
+                            CheckSQL(sql);
+                        }
                     }
                 }
                 catch (Exception ex) { }
