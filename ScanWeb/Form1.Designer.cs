@@ -41,7 +41,9 @@ namespace ScanWeb
             this.Response = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -52,8 +54,6 @@ namespace ScanWeb
             this.Method = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Url = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Paramate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             this.Response.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -97,7 +97,7 @@ namespace ScanWeb
             this.menuToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1495, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1634, 24);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -121,9 +121,9 @@ namespace ScanWeb
             // 
             this.Response.Controls.Add(this.tabControl1);
             this.Response.Controls.Add(this.treeView1);
-            this.Response.Location = new System.Drawing.Point(121, 360);
+            this.Response.Location = new System.Drawing.Point(121, 414);
             this.Response.Name = "Response";
-            this.Response.Size = new System.Drawing.Size(1362, 343);
+            this.Response.Size = new System.Drawing.Size(1464, 391);
             this.Response.TabIndex = 12;
             this.Response.TabStop = false;
             this.Response.Text = "Response";
@@ -136,7 +136,7 @@ namespace ScanWeb
             this.tabControl1.Location = new System.Drawing.Point(385, 32);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(971, 305);
+            this.tabControl1.Size = new System.Drawing.Size(1073, 353);
             this.tabControl1.TabIndex = 12;
             // 
             // tabPage1
@@ -145,10 +145,18 @@ namespace ScanWeb
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(963, 277);
+            this.tabPage1.Size = new System.Drawing.Size(1065, 325);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Response";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(6, 6);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(1053, 313);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = "";
             // 
             // tabPage2
             // 
@@ -156,16 +164,24 @@ namespace ScanWeb
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(963, 277);
+            this.tabPage2.Size = new System.Drawing.Size(1065, 325);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Info Vulnerability";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // richTextBox2
+            // 
+            this.richTextBox2.Location = new System.Drawing.Point(0, 0);
+            this.richTextBox2.Name = "richTextBox2";
+            this.richTextBox2.Size = new System.Drawing.Size(963, 277);
+            this.richTextBox2.TabIndex = 0;
+            this.richTextBox2.Text = "";
+            // 
             // treeView1
             // 
-            this.treeView1.Location = new System.Drawing.Point(6, 32);
+            this.treeView1.Location = new System.Drawing.Point(10, 32);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(351, 305);
+            this.treeView1.Size = new System.Drawing.Size(369, 353);
             this.treeView1.TabIndex = 11;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.ShowResponse);
             // 
@@ -175,7 +191,7 @@ namespace ScanWeb
             this.groupBox1.Controls.Add(this.dataGridView1);
             this.groupBox1.Location = new System.Drawing.Point(121, 96);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1362, 258);
+            this.groupBox1.Size = new System.Drawing.Size(1464, 312);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "List Url Request";
@@ -185,7 +201,7 @@ namespace ScanWeb
             this.panel1.Controls.Add(this.Close);
             this.panel1.Controls.Add(this.XssCheckBox);
             this.panel1.Controls.Add(this.SqlCheckBox);
-            this.panel1.Location = new System.Drawing.Point(509, 76);
+            this.panel1.Location = new System.Drawing.Point(643, 106);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(286, 176);
             this.panel1.TabIndex = 14;
@@ -251,12 +267,12 @@ namespace ScanWeb
             this.Url,
             this.Paramate});
             this.dataGridView1.GridColor = System.Drawing.Color.White;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 34);
+            this.dataGridView1.Location = new System.Drawing.Point(10, 20);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(1350, 218);
+            this.dataGridView1.Size = new System.Drawing.Size(1444, 277);
             this.dataGridView1.TabIndex = 12;
             // 
             // Method
@@ -284,27 +300,11 @@ namespace ScanWeb
             this.Paramate.HeaderText = "Paramate";
             this.Paramate.Name = "Paramate";
             // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Location = new System.Drawing.Point(0, 0);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(963, 277);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
-            // 
-            // richTextBox2
-            // 
-            this.richTextBox2.Location = new System.Drawing.Point(0, 0);
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.Size = new System.Drawing.Size(963, 277);
-            this.richTextBox2.TabIndex = 0;
-            this.richTextBox2.Text = "";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1495, 715);
+            this.ClientSize = new System.Drawing.Size(1634, 817);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.Response);
             this.Controls.Add(this.button2);
