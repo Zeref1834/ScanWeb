@@ -21,11 +21,31 @@ namespace ScanWeb
         private int numberOfSQL = 0;
         private List<UrlDetailModel> _listUrlDetail = new List<UrlDetailModel>();
         private List<string> _listParameter = new List<string>();
-        
+        private string[] xssParameters;
+        private string[] sqlParameters;
+        private string[] xssAttributes;
+        private string[] sqlAttributes;
+
+
         public Form1()
         {
             InitializeComponent();
-
+            GetParameter();
+            GetAttributes();
+        }
+        public void GetParameter()
+        {
+            string textFileXss = @"C:\Users\PC\OneDrive\Desktop\DATN\ScanWeb\ScanWeb\String\XssPayloadList.txt";
+            xssParameters = File.ReadAllLines(textFileXss);
+            string textFileSql = @"C:\Users\PC\OneDrive\Desktop\DATN\ScanWeb\ScanWeb\String\SqlInjectionsPayload.txt";
+            sqlParameters = File.ReadAllLines(textFileSql);
+        }
+        public void GetAttributes()
+        {
+            string textFileXss = @"C:\Users\PC\OneDrive\Desktop\DATN\ScanWeb\ScanWeb\String\Xss_attributes.txt";
+            xssAttributes = File.ReadAllLines(textFileXss);
+            string textFileSql = @"C:\Users\PC\OneDrive\Desktop\DATN\ScanWeb\ScanWeb\String\SqlInjection_attributes.txt";
+            sqlAttributes = File.ReadAllLines(textFileSql);
         }
 
         private async void button2_Click(object sender, EventArgs e)
@@ -70,20 +90,27 @@ namespace ScanWeb
         }
         public void CheckXSS(UrlDetailModel xss)
         {
-            if (xss.Response.Contains("(‘XSS’)"))
+            foreach(var xssAttribute in xssAttributes)
             {
-                numberOfXSS++;
-                _listUrlDetail.Add(xss);
+                if (xss.Response.Contains(xssAttribute))
+                {
+                    numberOfXSS++;
+                    _listUrlDetail.Add(xss);
+                    break;
+                }
             }
             dataGridView1.Rows.Add(xss.Method, xss.Url, xss.Parameter);
             dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
         }
         public void CheckSQL(UrlDetailModel sql)
         {
-            if (sql.Response.Contains("error in your SQL syntax"))
+            foreach(var sqlAttribute in sqlAttributes)
             {
-                numberOfSQL++;
-                _listUrlDetail.Add(sql);
+                if (sql.Response.Contains(sqlAttribute))
+                {
+                    numberOfSQL++;
+                    _listUrlDetail.Add(sql);
+                }
             }
             dataGridView1.Rows.Add(sql.Method, sql.Url, sql.Parameter);
             dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
@@ -94,10 +121,6 @@ namespace ScanWeb
             if (txt == null)
                 return;
             List<string> _listUrl = new List<string>();
-            string textFileXss = @"C:\Users\PC\OneDrive\Desktop\DATN\ScanWeb\ScanWeb\String\XssPayloadList.txt";
-            string[] xssparameters = File.ReadAllLines(textFileXss);
-            string textFileSql = @"C:\Users\PC\OneDrive\Desktop\DATN\ScanWeb\ScanWeb\String\SqlInjectionsPayload.txt";
-            string[] sqlParameters = File.ReadAllLines(textFileSql);
             HtmlWeb hw = new HtmlWeb();
             HtmlAgilityPack.HtmlDocument doc = hw.Load(txt);
             foreach (HtmlNode link in doc.DocumentNode.SelectNodes("//a[@href]"))
@@ -107,12 +130,11 @@ namespace ScanWeb
             }
             foreach (var _url in _listUrl)
             {
-                
                 try
                 {
                     if (XssCheckBox.Checked == true && SqlCheckBox.Checked == false)
                     {
-                        foreach (string parameter in xssparameters)
+                        foreach (string parameter in xssParameters)
                         {
                             UrlDetailModel xss = await ScanXssAsync(_url, parameter);
                             CheckXSS(xss);
@@ -129,7 +151,7 @@ namespace ScanWeb
                     }
                     else if (XssCheckBox.Checked == true && SqlCheckBox.Checked == true)
                     {
-                        foreach (string parameter in xssparameters)
+                        foreach (string parameter in xssParameters)
                         {
                             UrlDetailModel xss = await ScanXssAsync(_url, parameter);
                             CheckXSS(xss);
