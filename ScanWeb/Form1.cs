@@ -20,7 +20,6 @@ namespace ScanWeb
         private int numberOfXSS = 0;
         private int numberOfSQL = 0;
         private List<UrlDetailModel> _listUrlDetail = new List<UrlDetailModel>();
-        private List<string> _listParameter = new List<string>();
         private string[] xssParameters;
         private string[] sqlParameters;
         private string[] xssAttributes;
@@ -94,9 +93,14 @@ namespace ScanWeb
             {
                 if (xss.Response.Contains(xssAttribute))
                 {
-                    numberOfXSS++;
-                    _listUrlDetail.Add(xss);
-                    break;
+                    if (_listUrlDetail.Where(x => x.Url == xss.Url).Any())
+                        return;
+                    else
+                    {
+                        numberOfXSS++;
+                        _listUrlDetail.Add(xss);
+                        break;
+                    }
                 }
             }
             dataGridView1.Rows.Add(xss.Method, xss.Url, xss.Parameter);
@@ -108,8 +112,14 @@ namespace ScanWeb
             {
                 if (sql.Response.Contains(sqlAttribute))
                 {
-                    numberOfSQL++;
-                    _listUrlDetail.Add(sql);
+                    if (_listUrlDetail.Where(x => x.Url == sql.Url).Any())
+                        return;
+                    else
+                    {
+                        numberOfSQL++;
+                        _listUrlDetail.Add(sql);
+                        break;
+                    }
                 }
             }
             dataGridView1.Rows.Add(sql.Method, sql.Url, sql.Parameter);
